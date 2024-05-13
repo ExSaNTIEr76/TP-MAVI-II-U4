@@ -8,35 +8,32 @@
 
 using namespace sf;
 
-// RAGDOLL:
-//Ragdoll* ragdoll = new Ragdoll(phyWorld, wnd, 50.0f, 50.0f);
-
 Ragdoll::Ragdoll(b2World* world, sf::RenderWindow* window, float x, float y)
     : wnd(window), _body(nullptr)
 {
-    // Creamos el torso
+    // TORSO:
     b2Body* torso = CreateBodyPart(world, x, y, 8.0f, 12.0f);
 
-    // Creamos la cabeza
-    b2Body* cabeza = CreateBodyPart(world, x, y - 10.0f, 6.0f, 6.0f); // Posición de la cabeza ajustada para estar más cerca del torso
+    // CABEZA:
+    b2Body* cabeza = CreateBodyPart(world, x, y - 10.0f, 6.0f, 6.0f);
 
-    // Creamos los brazos
-    b2Body* brazoIzq = CreateBodyPart(world, x - 6.0f, y + 3.0f, 4.0f, 6.0f); // Posición del brazo izquierdo ajustada para estar más baja
-    b2Body* brazoDer = CreateBodyPart(world, x + 6.0f, y + 3.0f, 4.0f, 6.0f); // Posición del brazo derecho ajustada para estar más baja
+    // BRAZOS:
+    b2Body* brazoIzq = CreateBodyPart(world, x - 6.0f, y + 3.0f, 4.0f, 6.0f);
+    b2Body* brazoDer = CreateBodyPart(world, x + 6.0f, y + 3.0f, 4.0f, 6.0f);
 
-    // Creamos las piernas
-    b2Body* piernaIzq = CreateBodyPart(world, x - 3.0f, y + 30.0f, 4.0f, 10.0f); // Posición de la pierna izquierda ajustada para estar más abajo
-    b2Body* piernaDer = CreateBodyPart(world, x + 3.0f, y + 30.0f, 4.0f, 10.0f); // Posición de la pierna derecha ajustada para estar más abajo
+    // PIERNAS:
+    b2Body* piernaIzq = CreateBodyPart(world, x - 3.0f, y + 30.0f, 4.0f, 10.0f);
+    b2Body* piernaDer = CreateBodyPart(world, x + 3.0f, y + 30.0f, 4.0f, 10.0f);
 
-    // Unimos las partes del cuerpo con revolute joints
-    CreateSpringJoint(world, cabeza, torso, b2Vec2(0.0f, 1.0f), b2Vec2(0.0f, -8.0f), -0.2f * b2_pi, 0.2f * b2_pi); // Unión cabeza - torso
-    CreateSpringJoint(world, brazoIzq, torso, b2Vec2(-5.0f, 0.0f), b2Vec2(0.0f, -4.0f), -0.6f * b2_pi, 0.6f * b2_pi); // Unión brazo izquierdo - torso
-    CreateSpringJoint(world, brazoDer, torso, b2Vec2(5.0f, 0.0f), b2Vec2(0.0f, -4.0f), -0.6f * b2_pi, 0.6f * b2_pi); // Unión brazo derecho - torso
-    CreateSpringJoint(world, piernaIzq, torso, b2Vec2(-4.0f, 0.0f), b2Vec2(0.0f, 4.0f), -0.4f * b2_pi, 0.4f * b2_pi); // Unión pierna izquierda - torso
-    CreateSpringJoint(world, piernaDer, torso, b2Vec2(4.0f, 0.0f), b2Vec2(0.0f, 4.0f), -0.4f * b2_pi, 0.4f * b2_pi); // Unión pierna derecha - torso
+    // Uniones con revolute joints:
+    CreateSpringJoint(world, cabeza, torso, b2Vec2(0.0f, 1.0f), b2Vec2(0.0f, -8.0f), -0.2f * b2_pi, 0.2f * b2_pi);
+    CreateSpringJoint(world, brazoIzq, torso, b2Vec2(-5.0f, 0.0f), b2Vec2(0.0f, -4.0f), -0.6f * b2_pi, 0.6f * b2_pi);
+    CreateSpringJoint(world, brazoDer, torso, b2Vec2(5.0f, 0.0f), b2Vec2(0.0f, -4.0f), -0.6f * b2_pi, 0.6f * b2_pi);
+    CreateSpringJoint(world, piernaIzq, torso, b2Vec2(-4.0f, 0.0f), b2Vec2(0.0f, 4.0f), -0.4f * b2_pi, 0.4f * b2_pi);
+    CreateSpringJoint(world, piernaDer, torso, b2Vec2(4.0f, 0.0f), b2Vec2(0.0f, 4.0f), -0.4f * b2_pi, 0.4f * b2_pi);
 }
 
-// Método para crear un resorte entre dos cuerpos con restricciones de rotación
+// Método para crear un resorte entre dos cuerpos con restricciones de rotación:
 void Ragdoll::CreateSpringJoint(b2World* world, b2Body* bodyA, b2Body* bodyB, b2Vec2 localAnchorA, b2Vec2 localAnchorB, float lowerAngle, float upperAngle)
 {
     b2RevoluteJointDef jointDef;
@@ -50,28 +47,14 @@ void Ragdoll::CreateSpringJoint(b2World* world, b2Body* bodyA, b2Body* bodyB, b2
     world->CreateJoint(&jointDef);
 }
 
-// Método para actualizar la posición del sprite basada en la posición del cuerpo físico
-void Ragdoll::ActualizarPosiciones()
-{
-    b2Vec2 pos = _body->GetPosition();
-    sprite.setPosition(pos.x, pos.y);
-}
-
 void Ragdoll::Despertar()
 {
     _body->SetAwake(true);
 }
 
-// Método para dibujar el sprite en la ventana de renderizado
-void Ragdoll::Dibujar()
-{
-    wnd->draw(sprite);
-}
-
-
 void Ragdoll::ApplyLinearImpulse(const b2Vec2& impulse, const b2Vec2& point)
 {
-    // Aplicar impulso lineal al cuerpo principal del ragdoll
+    // Aplica un impulso lineal al cuerpo principal del ragdoll
     if (_body)
     {
         _body->ApplyLinearImpulse(impulse, point, true);

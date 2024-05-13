@@ -1,5 +1,6 @@
-﻿  Game.cpp
-C:\Users\I-MAG\Desktop\TP MAVI II - U4\TP MAVI II - U4\Resortes\Src\Game.cpp(96,76): warning C4244: 'argumento': conversión de 'T' a 'T'; posible pérdida de datos
+﻿  Box2dEmptyApp.cpp
+  Game.cpp
+C:\Users\I-MAG\Documents\GitHub\TP-MAVI-II-U4\TP MAVI II - U4\Resortes\Src\Game.cpp(96,76): warning C4244: 'argumento': conversión de 'T' a 'T'; posible pérdida de datos
           with
           [
               T=int
@@ -8,7 +9,7 @@ C:\Users\I-MAG\Desktop\TP MAVI II - U4\TP MAVI II - U4\Resortes\Src\Game.cpp(96,
           [
               T=float
           ]
-C:\Users\I-MAG\Desktop\TP MAVI II - U4\TP MAVI II - U4\Resortes\Src\Game.cpp(96,59): warning C4244: 'argumento': conversión de 'T' a 'T'; posible pérdida de datos
+C:\Users\I-MAG\Documents\GitHub\TP-MAVI-II-U4\TP MAVI II - U4\Resortes\Src\Game.cpp(96,59): warning C4244: 'argumento': conversión de 'T' a 'T'; posible pérdida de datos
           with
           [
               T=int
@@ -17,7 +18,7 @@ C:\Users\I-MAG\Desktop\TP MAVI II - U4\TP MAVI II - U4\Resortes\Src\Game.cpp(96,
           [
               T=float
           ]
-C:\Users\I-MAG\Desktop\TP MAVI II - U4\TP MAVI II - U4\Resortes\Src\Game.cpp(137,71): warning C4244: 'argumento': conversión de 'T' a 'T'; posible pérdida de datos
+C:\Users\I-MAG\Documents\GitHub\TP-MAVI-II-U4\TP MAVI II - U4\Resortes\Src\Game.cpp(139,71): warning C4244: 'argumento': conversión de 'T' a 'T'; posible pérdida de datos
           with
           [
               T=int
@@ -26,7 +27,7 @@ C:\Users\I-MAG\Desktop\TP MAVI II - U4\TP MAVI II - U4\Resortes\Src\Game.cpp(137
           [
               T=float
           ]
-C:\Users\I-MAG\Desktop\TP MAVI II - U4\TP MAVI II - U4\Resortes\Src\Game.cpp(137,54): warning C4244: 'argumento': conversión de 'T' a 'T'; posible pérdida de datos
+C:\Users\I-MAG\Documents\GitHub\TP-MAVI-II-U4\TP MAVI II - U4\Resortes\Src\Game.cpp(139,54): warning C4244: 'argumento': conversión de 'T' a 'T'; posible pérdida de datos
           with
           [
               T=int
@@ -35,4 +36,5 @@ C:\Users\I-MAG\Desktop\TP MAVI II - U4\TP MAVI II - U4\Resortes\Src\Game.cpp(137
           [
               T=float
           ]
-  Box2dResortes.vcxproj -> C:\Users\I-MAG\Desktop\TP MAVI II - U4\TP MAVI II - U4\Resortes\Bin\Debug\Box2dResortes.exe
+  Generando código...
+  Box2dResortes.vcxproj -> C:\Users\I-MAG\Documents\GitHub\TP-MAVI-II-U4\TP MAVI II - U4\Resortes\Bin\Debug\Box2dResortes.exe

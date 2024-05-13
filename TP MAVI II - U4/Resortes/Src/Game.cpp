@@ -49,7 +49,6 @@ void Game::DoEvents()
 		case Event::MouseButtonPressed:
 			if (evt.mouseButton.button == Mouse::Left)
 			{
-				// Crear un ragdoll en la posición de la boca del cañón con dirección adecuada
 				CreateRagdollFromCannon();
 			}
 			break;
@@ -68,49 +67,50 @@ void Game::SetZoom()
 // Dibujo de los elementos del juego
 void Game::DrawGame()
 {
-    // Dibujar los obstáculos
+    // Dibuja los obstáculos:
 	sf::RectangleShape obstacle(sf::Vector2f(10, 10));
 	obstacle.setFillColor(sf::Color::Cyan);
 	obstacle.setPosition(70, 60);
 	wnd->draw(obstacle);
 
-	// Dibujar el cuerpo de control (círculo)
+	// Dibuja el obstáculo dinámico:
 	sf::CircleShape controlShape(5);
 	controlShape.setFillColor(sf::Color::Magenta);
 	controlShape.setPosition(controlBody->GetPosition().x - 5, controlBody->GetPosition().y - 5);
 	wnd->draw(controlShape);
 
+	// Dibuja el pie del cañón:
     sf::RectangleShape pieCanon(sf::Vector2f(8, 10));
     pieCanon.setFillColor(sf::Color::Cyan);
-    pieCanon.setPosition(10, 85); // Ajustamos la posición del pie del cañón
+    pieCanon.setPosition(10, 85);
 
-    // Dibujar la boca del cañón
+    // Dibuja la boca del cañón:
     sf::RectangleShape bocaCanon(sf::Vector2f(15, 10));
     bocaCanon.setFillColor(sf::Color::Magenta);
     bocaCanon.setPosition(10, 80);
     bocaCanon.setOrigin(0, bocaCanon.getSize().y / 2.0f);
 
-	// Calcular la posición del cursor en relación con la ventana
+	// Calcula la posición del cursor en relación con la ventana:
 	sf::Vector2i mousePosition = sf::Mouse::getPosition(*wnd);
 	sf::Vector2f cannonMouthPosition = bocaCanon.getPosition() + sf::Vector2f(bocaCanon.getSize().x / 2.0f, bocaCanon.getSize().y / 2.0f);
 	sf::Vector2f cannonDirection = sf::Vector2f(mousePosition.x, mousePosition.y) - cannonMouthPosition;
 
-	// Normalizar el vector de dirección del cañón
+	// Normaliza el vector de dirección del cañón:
 	float length = std::sqrt(cannonDirection.x * cannonDirection.x + cannonDirection.y * cannonDirection.y);
 	if (length != 0) {
 		cannonDirection /= length;
 	}
 
-	// Calcular el ángulo entre la boca del cañón y la posición del cursor
+	// Calcula el ángulo entre la boca del cañón y la posición del cursor:
 	float angle = std::atan2(cannonDirection.y, cannonDirection.x) * 180 / b2_pi;
 
-	// Rotar la boca del cañón
+	// Rota la boca del cañón:
 	bocaCanon.setRotation(angle);
 
-	// Dibujar el pie del cañón
+	// Dibuja el pie del cañón:
 	wnd->draw(pieCanon);
 
-	// Dibujar la boca del cañón
+	// Dibuja la boca del cañón:
 	wnd->draw(bocaCanon);
 }
 
@@ -118,32 +118,34 @@ b2Vec2 ConvertVector(const sf::Vector2f& vector) {
 	return b2Vec2(vector.x, vector.y);
 }
 
+// Crea un ragdoll en la posición de la boca del cañón con dirección adecuada
 void Game::CreateRagdollFromCannon()
 {
-	// Calcular la posición de la boca del cañón en relación con la ventana
+	// Calcula la posición de la boca del cañón en relación con la ventana:
 	sf::Vector2f cannonMouthPosition = bocaCanon.getPosition() + sf::Vector2f(25, 60);
 
-	// Calcular la dirección del ragdoll basado en el ángulo de la boca del cañón
+	// Calcula la dirección del ragdoll basado en el ángulo de la boca del cañón:
 	float angleRad = bocaCanon.getRotation() * b2_pi / 180.0f;
 	b2Vec2 ragdollDirection(std::cos(angleRad), std::sin(angleRad));
 
-	// Crear un ragdoll en la posición de la boca del cañón
+	// Crea un ragdoll en la posición de la boca del cañón:
 	Ragdoll* ragdoll = new Ragdoll(phyWorld, wnd, cannonMouthPosition.x, cannonMouthPosition.y);
 			b2Vec2 b2CannonMouthPosition = ConvertVector(cannonMouthPosition);
-	// Verificar si el ragdoll se ha creado correctamente
+
+	// Verifica si el ragdoll se ha creado correctamente:
 	if (ragdoll && ragdoll->_body) {
-		// Aplicar una fuerza de eyección al ragdoll en la dirección del cursor
+		// Aplica una fuerza de eyección al ragdoll en la dirección del cursor:
 		sf::Vector2i mousePosition = sf::Mouse::getPosition(*wnd);
 		sf::Vector2f direction = sf::Vector2f(mousePosition.x, mousePosition.y) - cannonMouthPosition;
-		direction = direction / std::sqrt(direction.x * direction.x + direction.y * direction.y); // Normalizar el vector
-		b2Vec2 impulse(10.0f, 0.0f); // Vector de impulso (en Newtons)
+		direction = direction / std::sqrt(direction.x * direction.x + direction.y * direction.y);
+		b2Vec2 impulse(10.0f, 0.0f);
 		b2Vec2 b2CannonMouthPosition = ConvertVector(cannonMouthPosition);
 
-		// Aplicar una fuerza de eyección al ragdoll en la dirección del cursor
-		ragdoll->ApplyLinearImpulse(impulse, b2CannonMouthPosition);
-
-		// Despertar al ragdoll después de aplicar la fuerza
+		// Despierta al ragdoll ántes de aplicar la fuerza:
 		ragdoll->Despertar();
+
+		// Aplica una fuerza de eyección al ragdoll en la dirección del cursor:
+		ragdoll->ApplyLinearImpulse(impulse, b2CannonMouthPosition);
 	}
 }
 
@@ -176,7 +178,7 @@ void Game::InitPhysics()
 	controlBody = Box2DHelper::CreateCircularDynamicBody(phyWorld, 5, 10.0f, 5.0, 0.0f);
 	controlBody->SetTransform(b2Vec2(75.0f, 60.0f), 0.0f);
 
-	//CAÑÓN:
+	// CAÑÓN:
 	b2Body* pieCanon = Box2DHelper::CreateRectangularStaticBody(phyWorld, 8, 10);
 	pieCanon->SetTransform(b2Vec2(14.0f, 90.0f), 0.0f);;
 
