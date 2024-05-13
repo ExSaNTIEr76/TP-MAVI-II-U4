@@ -122,7 +122,7 @@ b2Vec2 ConvertVector(const sf::Vector2f& vector) {
 void Game::CreateRagdollFromCannon()
 {
 	// Calcula la posición de la boca del cañón en relación con la ventana:
-	sf::Vector2f cannonMouthPosition = bocaCanon.getPosition() + sf::Vector2f(25, 60);
+	sf::Vector2f cannonMouthPosition = bocaCanon.getPosition() + sf::Vector2f(25, 55);
 
 	// Calcula la dirección del ragdoll basado en el ángulo de la boca del cañón:
 	float angleRad = bocaCanon.getRotation() * b2_pi / 180.0f;
@@ -138,7 +138,7 @@ void Game::CreateRagdollFromCannon()
 		sf::Vector2i mousePosition = sf::Mouse::getPosition(*wnd);
 		sf::Vector2f direction = sf::Vector2f(mousePosition.x, mousePosition.y) - cannonMouthPosition;
 		direction = direction / std::sqrt(direction.x * direction.x + direction.y * direction.y);
-		b2Vec2 impulse(10.0f, 0.0f);
+		b2Vec2 impulse(100.0f, 0.0f);
 		b2Vec2 b2CannonMouthPosition = ConvertVector(cannonMouthPosition);
 
 		// Despierta al ragdoll ántes de aplicar la fuerza:
@@ -159,7 +159,6 @@ void Game::InitPhysics()
 	phyWorld->SetDebugDraw(debugRender); // Establece el renderizador de debug para el mundo de Box2D
 
 	// Crea cuerpos estáticos para simular el suelo y las paredes
-	// También crea cuerpos dinámicos (como círculos) y los une con resortes al techo para demostrar la simulación física
 	b2Body* groundBody = Box2DHelper::CreateRectangularStaticBody(phyWorld, 100, 10);
 	groundBody->SetTransform(b2Vec2(50.0f, 100.0f), 0.0f);
 

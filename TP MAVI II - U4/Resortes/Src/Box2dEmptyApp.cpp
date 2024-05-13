@@ -73,7 +73,9 @@ b2Body* Ragdoll::CreateBodyPart(b2World* world, float x, float y, float width, f
 
     b2FixtureDef fixtureDef;
     fixtureDef.shape = &shape;
-    fixtureDef.density = 1.0f;
+    fixtureDef.density = 0.5f;
+    fixtureDef.friction = 0.5f;
+    fixtureDef.restitution = 10.0f;
     body->CreateFixture(&fixtureDef);
 
     return body;
